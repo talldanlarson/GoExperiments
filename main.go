@@ -1,18 +1,8 @@
 package main
 
-import (
-	"fmt"
-	"runtime"
-)
+import "fmt"
 
 func main() {
-	fmt.Print("Go runs on ")
-	switch os := runtime.GOOS; os {
-	case "darwin":
-		fmt.Println("MacOS.")
-	case "linux":
-		fmt.Println("Linux.")
-	default:
-		fmt.Printf("%s\n", os)
-	}
+	defer fmt.Println("world")
+	fmt.Println("hello")
 }
