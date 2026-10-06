@@ -2,9 +2,10 @@ package main
 
 import "fmt"
 
-const Pi = 3.14
-
 func main() {
-	const World = "World"
-	fmt.Println(Pi, World)
+	sum := 0
+	for i := 0; i < 10; i++ {
+		sum += i
+	}
+	fmt.Println(sum)
 }
