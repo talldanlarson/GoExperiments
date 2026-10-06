@@ -3,6 +3,13 @@ package main
 import "fmt"
 
 func main() {
-	defer fmt.Println("world")
-	fmt.Println("hello")
+	i := 15
+
+	p := &i
+
+	fmt.Println(*p)
+
+	*p = 300
+
+	fmt.Println(i)
 }
