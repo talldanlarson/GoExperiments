@@ -2,19 +2,25 @@ package main
 
 import "fmt"
 
-var pow = []int{1, 2, 4, 8, 16, 32, 64, 128}
+type Vertex struct {
+	Lat, Long float64
+}
+
+var m = map[string]Vertex{
+	"Bell Labs": {
+		40.68433, -74.39967,
+	},
+}
 
 func main() {
-	for i, v := range pow {
-		fmt.Printf("2**%d = %d\n", i, v)
+	m["Google"] = Vertex{
+		37.42202, -112.08408,
 	}
+	fmt.Println(m)
 
-	x := make([]int, 10)
-	for i := range x {
-		x[i] = 1 << uint(i)
-	}
+	delete(m, "Google")
+	fmt.Println(m)
 
-	for _, value := range x {
-		fmt.Printf("%d\n", value)
-	}
+	v, ok := m["Google"]
+	fmt.Println("The value:", v, "Present?", ok)
 }
