@@ -5,32 +5,33 @@ import (
 	"math"
 )
 
-func adder() func(int) int {
-	sum := 0
-	return func(x int) int {
-		sum += x
-		return sum
-	}
+type Vertex struct {
+	X, Y float64
 }
 
-func compute(fn func(float64, float64) float64) float64 {
-	return fn(3, 4)
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func (v *Vertex) Scale(f float64) {
+	v.X = v.X * f
+	v.Y = v.Y * f
+}
+
+type MyFloat float64
+
+func (f MyFloat) Abs() float64 {
+	if f < 0 {
+		return float64(-f)
+	}
+	return float64(f)
 }
 
 func main() {
-	hypot := func(x, y float64) float64 {
-		return math.Sqrt(x*x + y*y)
-	}
-	fmt.Println(hypot(5, 12))
+	v := Vertex{3, 4}
+	v.Scale(10)
+	fmt.Println(v.Abs())
 
-	fmt.Println(compute(hypot))
-	fmt.Println(compute(math.Pow))
-
-	pos, neg := adder(), adder()
-	for i := 0; i < 10; i++ {
-		fmt.Println(
-			pos(i),
-			neg(-2*i),
-		)
-	}
+	f := MyFloat(-math.Sqrt2)
+	fmt.Println(f.Abs())
 }
