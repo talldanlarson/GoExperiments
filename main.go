@@ -1,56 +1,54 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
-	var a [2]string
-	a[0] = "Hello"
-	a[1] = "World"
-	fmt.Println(a[0], a[1])
-	fmt.Println(a)
+	a := make([]int, 5)
+	printSlice("a", a)
 
-	primes := [6]int{2, 3, 5, 7, 11, 13}
-	fmt.Println(primes)
+	b := make([]int, 0, 5)
+	printSlice("b", b)
 
-	var s []int = primes[1:4]
-	fmt.Println(s)
+	c := b[:2]
+	printSlice("c", c)
 
-	names := [4]string{
-		"John",
-		"Paul",
-		"George",
-		"Ringo",
+	d := c[2:5]
+	printSlice("d", d)
+
+	board := [][]string{
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
+		[]string{"_", "_", "_"},
 	}
-	fmt.Println(names)
 
-	b := names[0:2]
-	c := names[1:3]
-	fmt.Println(b, c)
+	board[0][0] = "X"
+	board[2][2] = "O"
+	board[1][2] = "X"
+	board[1][0] = "O"
+	board[0][2] = "X"
 
-	b[0] = "XXX"
-	fmt.Println(b, c)
-	fmt.Println(names)
-
-	t := []int{2, 3, 5, 7, 11, 13}
-
-	t = t[1:4]
-	fmt.Println(t)
-
-	t = t[:2]
-	fmt.Println(t)
-
-	t = t[1:]
-	fmt.Println(t)
-
-	printSlice(s)
-
-	var u []int
-	printSlice(u)
-	if u == nil {
-		fmt.Println("nil!")
+	for i := 0; i < len(board); i++ {
+		fmt.Printf("%s\n", strings.Join(board[i], " "))
 	}
+
+	var f []int
+	printSlice("f", f)
+
+	f = append(f, 0)
+	printSlice("f", f)
+
+	f = append(f, 1)
+	printSlice("f", f)
+
+	f = append(f, 2, 3, 4)
+	printSlice("f", f)
 }
 
-func printSlice(s []int) {
-	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
+func printSlice(s string, x []int) {
+	fmt.Printf("%s len=%d cap=%d %v\n",
+		s, len(x), cap(x), x,
+	)
 }
