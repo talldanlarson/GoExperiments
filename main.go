@@ -2,14 +2,11 @@ package main
 
 import "fmt"
 
+type Vertex struct {
+	X int
+	Y int
+}
+
 func main() {
-	i := 15
-
-	p := &i
-
-	fmt.Println(*p)
-
-	*p = 300
-
-	fmt.Println(i)
+	fmt.Println(Vertex{1, 2})
 }
