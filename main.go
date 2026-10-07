@@ -1,26 +1,36 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-type Vertex struct {
-	Lat, Long float64
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
 }
 
-var m = map[string]Vertex{
-	"Bell Labs": {
-		40.68433, -74.39967,
-	},
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
 }
 
 func main() {
-	m["Google"] = Vertex{
-		37.42202, -112.08408,
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
 	}
-	fmt.Println(m)
+	fmt.Println(hypot(5, 12))
 
-	delete(m, "Google")
-	fmt.Println(m)
+	fmt.Println(compute(hypot))
+	fmt.Println(compute(math.Pow))
 
-	v, ok := m["Google"]
-	fmt.Println("The value:", v, "Present?", ok)
+	pos, neg := adder(), adder()
+	for i := 0; i < 10; i++ {
+		fmt.Println(
+			pos(i),
+			neg(-2*i),
+		)
+	}
 }
