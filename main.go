@@ -2,37 +2,54 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
-type Abser interface {
-	Abs() float64
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+func (t *T) M() {
+	if t == nil {
+		fmt.Println("<nil>")
+		return
+	}
+	fmt.Println(t.S)
+}
+
+type F float64
+
+func (f F) M() {
+	fmt.Println(f)
 }
 
 func main() {
-	var a Abser
-	f := MyFloat(-math.Sqrt(2))
-	v := Vertex{3, 4}
+	var i I
+	var t *T
 
-	a = f
-	a = &v
+	i = t
+	describe(i)
+	i.M()
 
-	fmt.Println(a.Abs())
+	i = &T{"hello"}
+	describe(i)
+	i.M()
+
+	var g interface{}
+	describe2(g)
+	g = 42
+	describe2(g)
+	g = "hello"
+	describe2(g)
 }
 
-type MyFloat float64
-
-func (f MyFloat) Abs() float64 {
-	if f < 0 {
-		return float64(-f)
-	}
-	return float64(f)
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
 }
 
-type Vertex struct {
-	X, Y float64
-}
-
-func (v *Vertex) Abs() float64 {
-	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+func describe2(x interface{}) {
+	fmt.Printf("(%v, %T)\n", x, x)
 }
