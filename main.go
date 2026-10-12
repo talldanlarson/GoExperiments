@@ -1,55 +1,34 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
-type I interface {
-	M()
-}
-
-type T struct {
-	S string
-}
-
-func (t *T) M() {
-	if t == nil {
-		fmt.Println("<nil>")
-		return
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about this type %T!\n", v)
 	}
-	fmt.Println(t.S)
-}
-
-type F float64
-
-func (f F) M() {
-	fmt.Println(f)
 }
 
 func main() {
-	var i I
-	var t *T
+	var i interface{} = "hello"
 
-	i = t
-	describe(i)
-	i.M()
+	s := i.(string)
+	fmt.Println(s)
 
-	i = &T{"hello"}
-	describe(i)
-	i.M()
+	s, ok := i.(string)
+	fmt.Println(s, ok)
 
-	var g interface{}
-	describe2(g)
-	g = 42
-	describe2(g)
-	g = "hello"
-	describe2(g)
-}
+	f, ok := i.(float64)
+	fmt.Println(f, ok)
 
-func describe(i I) {
-	fmt.Printf("(%v, %T)\n", i, i)
-}
+	// f = i.(float64)
+	// fmt.Println(f)
 
-func describe2(x interface{}) {
-	fmt.Printf("(%v, %T)\n", x, x)
+	do(21)
+	do("hello")
+	do(true)
 }
