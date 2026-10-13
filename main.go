@@ -2,50 +2,33 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
-func fibonacci(c, quit chan int) {
-	x, y := 0, 1
-	for {
-		select {
-		case c <- x:
-			x, y = y, x+y
-		case <-quit:
-			fmt.Println("quit")
-			return
-		}
-	}
+type SafeCounter struct {
+	mu sync.Mutex
+	v  map[string]int
+}
+
+func (c *SafeCounter) Inc(key string) {
+	c.mu.Lock()
+	c.v[key]++
+	c.mu.Unlock()
+}
+
+func (c *SafeCounter) Value(key string) int {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.v[key]
 }
 
 func main() {
-	c := make(chan int)
-	quit := make(chan int)
-
-	go func() {
-		for i := 0; i < 10; i++ {
-			fmt.Println(<-c)
-		}
-		quit <- 0
-	}()
-	fibonacci(c, quit)
-
-	start := time.Now()
-	tick := time.Tick(100 * time.Millisecond)
-	boom := time.After(500 * time.Millisecond)
-
-	elapsed := func() time.Duration {
-		return time.Since(start).Round(time.Millisecond)
+	c := SafeCounter{v: make(map[string]int)}
+	for i := 0; i < 1000; i++ {
+		go c.Inc("somekey")
 	}
-	for {
-		select {
-		case <-tick:
-			fmt.Printf("[%6s] tick.\n", elapsed())
-		case <-boom:
-			fmt.Printf("[%6s] BOOM!\n", elapsed())
-		default:
-			fmt.Printf("[%6s]     .\n", elapsed())
-			time.Sleep(50 * time.Millisecond)
-		}
-	}
+
+	time.Sleep(time.Second)
+	fmt.Println(c.Value("somekey"))
 }
