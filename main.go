@@ -1,12 +1,20 @@
 package main
 
-import (
-	"fmt"
-	"image"
-)
+import "fmt"
+
+func Index[T comparable](s []T, x T) int {
+	for i, v := range s {
+		if v == x {
+			return i
+		}
+	}
+	return -1
+}
 
 func main() {
-	m := image.NewRGBA(image.Rect(0, 0, 100, 100))
-	fmt.Println(m.Bounds())
-	fmt.Println(m.At(0, 0).RGBA())
+	si := []int{10, 20, 15, -10}
+	fmt.Println(Index(si, 15))
+
+	ss := []string{"foo", "bar", "baz"}
+	fmt.Println(Index(ss, "hello"))
 }
