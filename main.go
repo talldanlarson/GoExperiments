@@ -1,20 +1,18 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
-func Index[T comparable](s []T, x T) int {
-	for i, v := range s {
-		if v == x {
-			return i
-		}
+func say(s string) {
+	for i := 0; i < 5; i++ {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
 	}
-	return -1
 }
 
 func main() {
-	si := []int{10, 20, 15, -10}
-	fmt.Println(Index(si, 15))
-
-	ss := []string{"foo", "bar", "baz"}
-	fmt.Println(Index(ss, "hello"))
+	go say("world")
+	say("hello")
 }
